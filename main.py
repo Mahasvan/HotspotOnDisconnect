@@ -18,14 +18,16 @@ timeout = 10
 
 print(misc.colour_blue("Starting script..."))
 while True:
-    url = "https://google.com"
+    time.sleep(timeout)
+    url = "google.com"
+    misc.print_message(misc.colour_yellow("Pinging: "+url))
     try:
-        r = requests.get(url)
-        status_code = r.status_code
+        ping_command = subprocess.run(["ping", url, "/n", "1"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        status_code = ping_command.returncode
     except:
-        status_code = 404
+        status_code = 1
 
-    if status_code != 200:
+    if status_code != 0:
         if hotspot_on:
             # the hotspot is already on, we don't need to turn it on again
             continue
@@ -33,7 +35,7 @@ while True:
         misc.print_message(misc.colour_yellow("Response code: " + str(status_code)))
 
         misc.print_message(misc.colour_blue("Turning on hotspot..."))
-
+        # turn on hotspot
         command = subprocess.run(str(enable_file), shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
         if command.returncode != 0:
             misc.print_message(misc.colour_red("Hotspot could not be turned on!"))
@@ -43,14 +45,14 @@ while True:
             hotspot_on = True
 
     else:
-        # response code is 200, we have internet!
+        # response code is 0, we have internet!
         if not hotspot_on:
             # the hotspot is already off, we don't need to turn it off again
             continue
 
         misc.print_message(misc.colour_yellow("Response code: " + str(status_code)))
         misc.print_message(misc.colour_blue("Turning off hotspot..."))
-
+        # turn off hotspot
         command = subprocess.run(str(disable_file), shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
         if command.returncode == 0:
             # hotspot is now off
@@ -58,5 +60,3 @@ while True:
             hotspot_on = False
         else:
             misc.print_message(misc.colour_red("Hotspot could not be turned off!"))
-
-    time.sleep(timeout)
