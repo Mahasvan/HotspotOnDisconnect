@@ -1,4 +1,5 @@
 import json
+import os
 import time
 import subprocess
 
@@ -17,6 +18,9 @@ disable_command = f"netsh wlan stop hostednetwork"
 timeout = 10
 
 print(misc.colour_blue("Starting script..."))
+print(misc.colour_yellow("Pulling from git..."))
+os.system("git pull")
+
 print(misc.colour_blue("Setting up hotspot..."))
 subprocess.run(setup_command, shell=True)
 print(misc.colour_blue("Hotspot setup complete!"))
