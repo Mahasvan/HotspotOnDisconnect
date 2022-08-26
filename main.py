@@ -37,7 +37,7 @@ while True:
             # the hotspot is already on, we don't need to turn it on again
             continue
         else:
-            misc.print_message(misc.colour_yellow(f"Hotspot Status: {hotspot_status}"))
+            misc.print_message(misc.colour_cyan(f"Hotspot Status: {hotspot_status}"))
 
         # print response code
         misc.print_message(misc.colour_yellow("Response code: " + str(status_code)))
@@ -63,6 +63,7 @@ while True:
         command = subprocess.run(str(disable_command), shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
         if misc.check_hotspot_status().strip().lower() in ("stopped", "not started"):
             # hotspot is now off
+            misc.print_message(misc.colour_cyan(f"Hotspot Status: {misc.check_hotspot_status()}"))
             misc.print_message(misc.colour_green("Hotspot turned off"))
         else:
             misc.print_message(misc.colour_red("Hotspot could not be turned off!"))
