@@ -61,7 +61,7 @@ while True:
         misc.print_message(misc.colour_blue("Turning off hotspot..."))
         # turn off hotspot
         command = subprocess.run(str(disable_command), shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
-        if misc.check_hotspot_status().strip().lower() == "stopped":
+        if misc.check_hotspot_status().strip().lower() in ("stopped", "not started"):
             # hotspot is now off
             misc.print_message(misc.colour_green("Hotspot turned off"))
         else:
